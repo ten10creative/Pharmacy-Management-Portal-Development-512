@@ -23,7 +23,9 @@ export const AppSettingsProvider = ({ children }) => {
   const loadSettings = async () => {
     try {
       setLoading(true);
+      console.log('Loading app settings...');
       const settingsObject = await appSettingsService.getAsObject();
+      console.log('Loaded settings:', settingsObject);
       setSettings(settingsObject);
     } catch (error) {
       console.error('Error loading app settings:', error);
@@ -44,8 +46,10 @@ export const AppSettingsProvider = ({ children }) => {
 
   const updateSetting = async (key, value) => {
     try {
+      console.log('Updating setting:', key, '=', value);
       await appSettingsService.updateSetting(key, value);
       setSettings(prev => ({ ...prev, [key]: value }));
+      console.log('Setting updated successfully');
       return true;
     } catch (error) {
       console.error('Error updating setting:', error);
@@ -55,13 +59,18 @@ export const AppSettingsProvider = ({ children }) => {
 
   const updateMultipleSettings = async (settingsArray) => {
     try {
-      await appSettingsService.updateMultiple(settingsArray);
+      console.log('Updating multiple settings:', settingsArray);
+      const results = await appSettingsService.updateMultiple(settingsArray);
+      
+      // Update local state with the new values
       const newSettings = settingsArray.reduce((acc, setting) => {
         acc[setting.key] = setting.value;
         return acc;
       }, {});
+      
       setSettings(prev => ({ ...prev, ...newSettings }));
-      return true;
+      console.log('Multiple settings updated successfully');
+      return results;
     } catch (error) {
       console.error('Error updating multiple settings:', error);
       throw error;

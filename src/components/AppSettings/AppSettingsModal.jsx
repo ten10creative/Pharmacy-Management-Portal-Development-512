@@ -23,6 +23,7 @@ const AppSettingsModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (settings && Object.keys(settings).length > 0) {
+      console.log('Setting form data from settings:', settings);
       setFormData({
         app_name: settings.app_name || '',
         app_tagline: settings.app_tagline || '',
@@ -40,17 +41,24 @@ const AppSettingsModal = ({ isOpen, onClose }) => {
     setSaving(true);
 
     try {
-      const settingsArray = Object.keys(formData).map(key => ({
-        key,
-        value: formData[key]
-      }));
+      console.log('Submitting form data:', formData);
+      
+      // Convert form data to settings array
+      const settingsArray = Object.keys(formData)
+        .filter(key => formData[key] !== '') // Only include non-empty values
+        .map(key => ({
+          key,
+          value: formData[key]
+        }));
+
+      console.log('Settings array to save:', settingsArray);
 
       await updateMultipleSettings(settingsArray);
       toast.success('App settings updated successfully!');
       onClose();
     } catch (error) {
       console.error('Error updating app settings:', error);
-      toast.error('Failed to update app settings');
+      toast.error('Failed to update app settings. Please check the console for details.');
     } finally {
       setSaving(false);
     }
@@ -58,6 +66,7 @@ const AppSettingsModal = ({ isOpen, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log('Form field changed:', name, '=', value);
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
