@@ -9,17 +9,18 @@ import { formatDistanceToNow } from 'date-fns';
 const { FiBell, FiMessageCircle, FiUser, FiTrash2, FiCheck, FiCheckCircle, FiExternalLink } = FiIcons;
 
 const NotificationDropdown = () => {
-  const { 
-    notifications, 
-    markAsRead, 
-    markAllAsRead, 
-    deleteNotification, 
-    clearAllNotifications, 
-    getUnreadCount 
+  const {
+    notifications,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    clearAllNotifications,
+    getUnreadCount
   } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+
   const unreadCount = getUnreadCount();
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const NotificationDropdown = () => {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef} style={{ zIndex: 40 }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
@@ -116,7 +117,8 @@ const NotificationDropdown = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 max-h-96 overflow-hidden"
+            className="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-96 overflow-hidden"
+            style={{ zIndex: 45 }}
           >
             {/* Header */}
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -172,29 +174,33 @@ const NotificationDropdown = () => {
                     }`}
                   >
                     <div className="flex items-start space-x-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        !notification.read ? 'bg-blue-100 dark:bg-blue-900/20' : 'bg-gray-100 dark:bg-gray-700'
-                      }`}>
-                        <SafeIcon 
-                          icon={getNotificationIcon(notification.type)} 
-                          className={`text-sm ${getNotificationColor(notification.type)}`} 
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          !notification.read
+                            ? 'bg-blue-100 dark:bg-blue-900/20'
+                            : 'bg-gray-100 dark:bg-gray-700'
+                        }`}
+                      >
+                        <SafeIcon
+                          icon={getNotificationIcon(notification.type)}
+                          className={`text-sm ${getNotificationColor(notification.type)}`}
                         />
                       </div>
-                      
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
-                            <p className={`text-sm ${
-                              !notification.read 
-                                ? 'font-medium text-gray-900 dark:text-white' 
-                                : 'text-gray-700 dark:text-gray-300'
-                            }`}>
+                            <p
+                              className={`text-sm ${
+                                !notification.read
+                                  ? 'font-medium text-gray-900 dark:text-white'
+                                  : 'text-gray-700 dark:text-gray-300'
+                              }`}
+                            >
                               {notification.title}
                             </p>
                             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                               {notification.message}
                             </p>
-                            
                             {/* Location indicator */}
                             {getNotificationLocation(notification) && (
                               <div className="flex items-center space-x-1 mt-2">
@@ -209,7 +215,6 @@ const NotificationDropdown = () => {
                                 )}
                               </div>
                             )}
-                            
                             <div className="flex items-center justify-between mt-2">
                               <p className="text-xs text-gray-400 dark:text-gray-500">
                                 {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
@@ -221,7 +226,6 @@ const NotificationDropdown = () => {
                               )}
                             </div>
                           </div>
-                          
                           <div className="flex items-center space-x-1 ml-2">
                             {!notification.read && (
                               <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>

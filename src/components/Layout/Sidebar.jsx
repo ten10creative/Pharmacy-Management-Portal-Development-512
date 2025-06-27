@@ -3,8 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SafeIcon from '../../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
+import DynamicLogo from './DynamicLogo';
 
-const { FiGrid, FiUsers, FiCheckSquare, FiFileText, FiActivity, FiChevronLeft, FiChevronRight, FiHome } = FiIcons;
+const { FiGrid, FiUsers, FiCheckSquare, FiFileText, FiChevronLeft, FiChevronRight, FiHome } = FiIcons;
 
 const Sidebar = ({ isCollapsed, setIsCollapsed, isMobile }) => {
   const location = useLocation();
@@ -41,21 +42,22 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobile }) => {
                 transition={{ duration: 0.2 }}
                 className="flex items-center space-x-3"
               >
-                <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <SafeIcon icon={FiActivity} className="text-white text-xl" />
-                </div>
-                <div className="min-w-0">
-                  <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">PharmaCRM</h1>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 truncate">Clean Room Management</p>
-                </div>
+                <DynamicLogo 
+                  className="w-10 h-10"
+                  textSize="text-xl"
+                  showText={true}
+                  iconClassName="text-white text-xl"
+                />
               </motion.div>
             )}
           </AnimatePresence>
 
           {isCollapsed && (
-            <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center mx-auto">
-              <SafeIcon icon={FiActivity} className="text-white text-xl" />
-            </div>
+            <DynamicLogo 
+              className="w-10 h-10 mx-auto"
+              showText={false}
+              iconClassName="text-white text-xl"
+            />
           )}
         </div>
       </div>
@@ -80,6 +82,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobile }) => {
               title={isCollapsed ? item.label : ''}
             >
               <SafeIcon icon={item.icon} className="text-lg flex-shrink-0" />
+              
               <AnimatePresence>
                 {!isCollapsed && (
                   <motion.span
@@ -122,6 +125,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobile }) => {
           title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           <SafeIcon icon={isCollapsed ? FiChevronRight : FiChevronLeft} className="text-lg" />
+          
           <AnimatePresence>
             {!isCollapsed && (
               <motion.span

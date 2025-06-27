@@ -19,15 +19,55 @@ body {
   height: 100%;
 }
 
-/* Dark mode CSS variables for toast */
+/* Toast CSS variables for light/dark mode */
 :root {
+  /* Default toast styles - Light mode */
   --toast-bg: #ffffff;
-  --toast-color: #374151;
+  --toast-text: #374151;
+  --toast-border: #e5e7eb;
+  
+  /* Success toast styles - Light mode */
+  --toast-success-bg: #f0fdf4;
+  --toast-success-text: #166534;
+  --toast-success-border: #bbf7d0;
+  --toast-success-icon: #22c55e;
+  
+  /* Error toast styles - Light mode */
+  --toast-error-bg: #fef2f2;
+  --toast-error-text: #991b1b;
+  --toast-error-border: #fecaca;
+  --toast-error-icon: #ef4444;
+  
+  /* Loading toast styles - Light mode */
+  --toast-loading-bg: #fffbeb;
+  --toast-loading-text: #92400e;
+  --toast-loading-border: #fde68a;
+  --toast-loading-icon: #f59e0b;
 }
 
 .dark {
+  /* Dark mode default toast styles */
   --toast-bg: #1f2937;
-  --toast-color: #f3f4f6;
+  --toast-text: #f9fafb;
+  --toast-border: #374151;
+  
+  /* Dark mode success toast styles */
+  --toast-success-bg: #064e3b;
+  --toast-success-text: #6ee7b7;
+  --toast-success-border: #047857;
+  --toast-success-icon: #10b981;
+  
+  /* Dark mode error toast styles */
+  --toast-error-bg: #7f1d1d;
+  --toast-error-text: #fca5a5;
+  --toast-error-border: #991b1b;
+  --toast-error-icon: #f87171;
+  
+  /* Dark mode loading toast styles */
+  --toast-loading-bg: #78350f;
+  --toast-loading-text: #fcd34d;
+  --toast-loading-border: #92400e;
+  --toast-loading-icon: #fbbf24;
 }
 
 /* Ensure proper dark mode transitions */
@@ -50,4 +90,388 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* ========================================== */
+/* TEXT RESPONSIVENESS AND LINE CLAMPING */
+/* ========================================== */
+
+/* Line clamp utilities for better text truncation */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  word-break: break-word;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-word;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  word-break: break-word;
+}
+
+.line-clamp-4 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  word-break: break-word;
+}
+
+/* Responsive text handling */
+.text-responsive {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Ensure all text in cards is responsive */
+.dashboard-card {
+  overflow: hidden;
+}
+
+.dashboard-card * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Specific improvements for comment cards */
+.comment-card {
+  overflow: hidden;
+}
+
+.comment-card .comment-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+}
+
+.comment-card .comment-location {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* ========================================== */
+/* ULTIMATE TOAST Z-INDEX CONFIGURATION */
+/* BOTTOM RIGHT POSITIONING WITH MAXIMUM Z-INDEX */
+/* ========================================== */
+
+/* Bottom Right Toast Container - ABSOLUTE MAXIMUM Z-INDEX */
+.toast-container-bottom-right {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+/* Bottom Right Toast Notifications - ABSOLUTE MAXIMUM Z-INDEX */
+.toast-notification-bottom-right,
+.toast-success-bottom-right,
+.toast-error-bottom-right,
+.toast-loading-bottom-right {
+  z-index: 999999999 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+  margin-bottom: 8px !important;
+}
+
+/* React Hot Toast Container Override - BOTTOM RIGHT ABSOLUTE MAXIMUM */
+[data-sonner-toaster] {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+[data-sonner-toast] {
+  z-index: 999999999 !important;
+  position: relative !important;
+  background: var(--toast-bg) !important;
+  color: var(--toast-text) !important;
+  border: 1px solid var(--toast-border) !important;
+  pointer-events: auto !important;
+  margin-bottom: 8px !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+  background: var(--toast-success-bg) !important;
+  color: var(--toast-success-text) !important;
+  border-color: var(--toast-success-border) !important;
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  background: var(--toast-error-bg) !important;
+  color: var(--toast-error-text) !important;
+  border-color: var(--toast-error-border) !important;
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+[data-sonner-toast][data-type="loading"] {
+  background: var(--toast-loading-bg) !important;
+  color: var(--toast-loading-text) !important;
+  border-color: var(--toast-loading-border) !important;
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* React Hot Toast specific overrides - BOTTOM RIGHT ABSOLUTE MAXIMUM */
+.react-hot-toast {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+.react-hot-toast > div {
+  z-index: 999999999 !important;
+  position: relative !important;
+  background: var(--toast-bg) !important;
+  color: var(--toast-text) !important;
+  border: 1px solid var(--toast-border) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  pointer-events: auto !important;
+  margin-bottom: 8px !important;
+}
+
+/* Success toast overrides - BOTTOM RIGHT ABSOLUTE MAXIMUM */
+.react-hot-toast > div[data-type="success"],
+.react-hot-toast .toast-success-bottom-right {
+  background: var(--toast-success-bg) !important;
+  color: var(--toast-success-text) !important;
+  border-color: var(--toast-success-border) !important;
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Error toast overrides - BOTTOM RIGHT ABSOLUTE MAXIMUM */
+.react-hot-toast > div[data-type="error"],
+.react-hot-toast .toast-error-bottom-right {
+  background: var(--toast-error-bg) !important;
+  color: var(--toast-error-text) !important;
+  border-color: var(--toast-error-border) !important;
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Loading toast overrides - BOTTOM RIGHT ABSOLUTE MAXIMUM */
+.react-hot-toast > div[data-type="loading"],
+.react-hot-toast .toast-loading-bottom-right {
+  background: var(--toast-loading-bg) !important;
+  color: var(--toast-loading-text) !important;
+  border-color: var(--toast-loading-border) !important;
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Toast notification animations - BOTTOM RIGHT */
+@keyframes toast-enter-bottom-right {
+  from {
+    transform: translateX(100%) translateY(50%);
+    opacity: 0;
+    scale: 0.9;
+  }
+  to {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes toast-exit-bottom-right {
+  from {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    transform: translateX(100%) translateY(50%);
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+/* Apply animations to bottom right toast notifications */
+[data-sonner-toast] {
+  animation: toast-enter-bottom-right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-sonner-toast][data-removed="true"] {
+  animation: toast-exit-bottom-right 0.3s cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* Ensure toast wrapper has BOTTOM RIGHT ABSOLUTE MAXIMUM z-index */
+.Toaster__toast,
+.__react-hot-toast,
+.__react-hot-toast__toast {
+  z-index: 999999999 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+}
+
+/* Additional fallback for any toast container - BOTTOM RIGHT ABSOLUTE MAXIMUM */
+div[role="status"],
+div[data-testid="toast"],
+.toast-container,
+.notification-container {
+  z-index: 999999999 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure toast text is always visible */
+.toast-notification-bottom-right *,
+.toast-success-bottom-right *,
+.toast-error-bottom-right *,
+.toast-loading-bottom-right * {
+  z-index: inherit !important;
+  color: inherit !important;
+  pointer-events: auto !important;
+}
+
+/* Additional React Hot Toast overrides for maximum coverage - BOTTOM RIGHT */
+[data-react-hot-toast],
+[class*="toast"],
+[class*="notification"] {
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Force all toast-related elements to maximum z-index - BOTTOM RIGHT */
+*[class*="toast"] {
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Final fallback for any missed toast elements - BOTTOM RIGHT */
+.react-hot-toast-container,
+.react-hot-toast-wrapper,
+.toaster-container {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+/* ULTIMATE TOAST CONTAINER OVERRIDE - BOTTOM RIGHT */
+/* This selector targets the react-hot-toast library's root container */
+#react-hot-toast-container,
+[data-react-hot-toast-container] {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+/* Override any possible toast library containers - BOTTOM RIGHT */
+.toast-root,
+.toast-viewport,
+.Toaster,
+[data-toaster],
+[class*="Toaster"] {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+/* Radix UI Toast overrides - BOTTOM RIGHT */
+[data-radix-toast-viewport],
+[data-radix-toast] {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+/* Sonner Toast overrides - BOTTOM RIGHT */
+[data-sonner-toaster] {
+  z-index: 999999999 !important;
+  position: fixed !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
+  pointer-events: none !important;
+}
+
+/* React Hot Toast library specific containers - BOTTOM RIGHT */
+.__react-hot-toast-container,
+.__react-hot-toast-toast-bar {
+  z-index: 999999999 !important;
+  pointer-events: auto !important;
+}
+
+/* Mobile responsive adjustments for bottom right toasts */
+@media (max-width: 768px) {
+  .toast-container-bottom-right,
+  .react-hot-toast,
+  [data-sonner-toaster],
+  #react-hot-toast-container,
+  [data-react-hot-toast-container],
+  .toast-root,
+  .toast-viewport,
+  .Toaster,
+  [data-toaster],
+  [class*="Toaster"] {
+    bottom: 5rem !important; /* Above mobile bottom navigation */
+    right: 0.5rem !important;
+    left: 0.5rem !important;
+    width: auto !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+  
+  .toast-notification-bottom-right,
+  .toast-success-bottom-right,
+  .toast-error-bottom-right,
+  .toast-loading-bottom-right,
+  [data-sonner-toast],
+  .react-hot-toast > div {
+    max-width: calc(100vw - 1rem) !important;
+    min-width: auto !important;
+    width: 100% !important;
+  }
+}
+
+/* Desktop specific positioning */
+@media (min-width: 769px) {
+  .toast-container-bottom-right,
+  .react-hot-toast,
+  [data-sonner-toaster],
+  #react-hot-toast-container,
+  [data-react-hot-toast-container],
+  .toast-root,
+  .toast-viewport,
+  .Toaster,
+  [data-toaster],
+  [class*="Toaster"] {
+    bottom: 1rem !important;
+    right: 1rem !important;
+    left: auto !important;
+    width: auto !important;
+  }
 }

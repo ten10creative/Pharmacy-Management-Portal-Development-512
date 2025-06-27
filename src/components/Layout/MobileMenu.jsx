@@ -3,8 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import SafeIcon from '../../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
+import DynamicLogo from './DynamicLogo';
 
-const { FiGrid, FiUsers, FiCheckSquare, FiFileText, FiActivity, FiX, FiHome } = FiIcons;
+const { FiGrid, FiUsers, FiCheckSquare, FiFileText, FiX, FiHome } = FiIcons;
 
 const MobileMenu = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -41,15 +42,12 @@ const MobileMenu = ({ isOpen, onClose }) => {
             {/* Header */}
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
-                    <SafeIcon icon={FiActivity} className="text-white text-xl" />
-                  </div>
-                  <div>
-                    <h1 className="text-xl font-bold text-gray-900 dark:text-white">PharmaCRM</h1>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Clean Room Management</p>
-                  </div>
-                </div>
+                <DynamicLogo 
+                  className="w-10 h-10"
+                  textSize="text-xl"
+                  showText={true}
+                  iconClassName="text-white text-xl"
+                />
                 <button
                   onClick={onClose}
                   className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"

@@ -3,13 +3,15 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import SafeIcon from '../common/SafeIcon';
 import * as FiIcons from 'react-icons/fi';
+import AppSettingsModal from '../components/AppSettings/AppSettingsModal';
 import toast from 'react-hot-toast';
 
-const { FiUser, FiBell, FiShield, FiDatabase, FiMail, FiPhone, FiSave } = FiIcons;
+const { FiUser, FiBell, FiShield, FiDatabase, FiMail, FiPhone, FiSave, FiSettings } = FiIcons;
 
 const Settings = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
+  const [showAppSettings, setShowAppSettings] = useState(false);
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -17,7 +19,6 @@ const Settings = () => {
     role: user?.role || '',
     avatar: user?.avatar || ''
   });
-
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     pushNotifications: true,
@@ -60,6 +61,17 @@ const Settings = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Settings</h1>
+        
+        {/* App Settings Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setShowAppSettings(true)}
+          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+        >
+          <SafeIcon icon={FiSettings} />
+          <span>App Settings</span>
+        </motion.button>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
@@ -90,7 +102,7 @@ const Settings = () => {
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Profile Information</h2>
-              
+
               <div className="flex items-center space-x-6">
                 <img
                   src={profileData.avatar}
@@ -187,7 +199,7 @@ const Settings = () => {
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Notification Preferences</h2>
-              
+
               <div className="space-y-4">
                 {[
                   { key: 'emailNotifications', label: 'Email Notifications', description: 'Receive notifications via email' },
@@ -232,7 +244,7 @@ const Settings = () => {
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Security Settings</h2>
-              
+
               <div className="space-y-6">
                 <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700/50">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Change Password</h3>
@@ -290,7 +302,7 @@ const Settings = () => {
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Data Management</h2>
-              
+
               <div className="space-y-6">
                 <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-700/50">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Export Data</h3>
@@ -316,6 +328,12 @@ const Settings = () => {
           )}
         </div>
       </div>
+
+      {/* App Settings Modal */}
+      <AppSettingsModal 
+        isOpen={showAppSettings} 
+        onClose={() => setShowAppSettings(false)} 
+      />
     </div>
   );
 };

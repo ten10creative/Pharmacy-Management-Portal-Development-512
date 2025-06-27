@@ -31,7 +31,7 @@ const ProfileDropdown = () => {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef} style={{ zIndex: 40 }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 md:space-x-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -45,11 +45,11 @@ const ProfileDropdown = () => {
           <p className="font-medium text-gray-900 dark:text-white">{user?.name}</p>
           <p className="text-gray-500 dark:text-gray-400 capitalize">{user?.role}</p>
         </div>
-        <SafeIcon 
-          icon={FiChevronDown} 
+        <SafeIcon
+          icon={FiChevronDown}
           className={`text-gray-400 dark:text-gray-500 text-sm transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
-          }`} 
+          }`}
         />
       </button>
 
@@ -60,7 +60,8 @@ const ProfileDropdown = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+            className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
+            style={{ zIndex: 45 }}
           >
             {/* Profile Header */}
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">

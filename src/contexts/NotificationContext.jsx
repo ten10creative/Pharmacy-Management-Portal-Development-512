@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { notificationService } from '../services/supabaseService';
+import { useAuth } from './AuthContext';
 
 const NotificationContext = createContext();
 
@@ -12,57 +13,92 @@ export const useNotifications = () => {
 };
 
 export const NotificationProvider = ({ children }) => {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load notifications from localStorage on mount
+  // Load notifications when user is authenticated
   useEffect(() => {
-    const savedNotifications = localStorage.getItem('notifications');
-    if (savedNotifications) {
-      setNotifications(JSON.parse(savedNotifications));
+    if (user) {
+      loadNotifications();
+    } else {
+      setNotifications([]);
+      setLoading(false);
     }
-  }, []);
+  }, [user]);
 
-  // Save notifications to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('notifications', JSON.stringify(notifications));
-  }, [notifications]);
-
-  const addNotification = (notification) => {
-    const newNotification = {
-      ...notification,
-      id: uuidv4(),
-      createdAt: new Date().toISOString(),
-      read: false
-    };
-    
-    setNotifications(prev => [newNotification, ...prev]);
-    return newNotification;
+  const loadNotifications = async () => {
+    try {
+      setLoading(true);
+      const data = await notificationService.getByUserId(user.id);
+      setNotifications(data || []);
+    } catch (error) {
+      console.error('Error loading notifications:', error);
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const markAsRead = (notificationId) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === notificationId 
-          ? { ...notification, read: true }
-          : notification
-      )
-    );
+  const addNotification = async (notification) => {
+    try {
+      const newNotification = await notificationService.create(notification);
+      setNotifications(prev => [newNotification, ...prev]);
+      return newNotification;
+    } catch (error) {
+      console.error('Error adding notification:', error);
+      throw error;
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications(prev => 
-      prev.map(notification => ({ ...notification, read: true }))
-    );
+  const markAsRead = async (notificationId) => {
+    try {
+      await notificationService.markAsRead(notificationId);
+      setNotifications(prev => 
+        prev.map(notification => 
+          notification.id === notificationId 
+            ? { ...notification, read: true }
+            : notification
+        )
+      );
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+      throw error;
+    }
   };
 
-  const deleteNotification = (notificationId) => {
-    setNotifications(prev => 
-      prev.filter(notification => notification.id !== notificationId)
-    );
+  const markAllAsRead = async () => {
+    try {
+      await notificationService.markAllAsRead(user.id);
+      setNotifications(prev => 
+        prev.map(notification => ({ ...notification, read: true }))
+      );
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+      throw error;
+    }
   };
 
-  const clearAllNotifications = () => {
-    setNotifications([]);
+  const deleteNotification = async (notificationId) => {
+    try {
+      await notificationService.delete(notificationId);
+      setNotifications(prev => 
+        prev.filter(notification => notification.id !== notificationId)
+      );
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+      throw error;
+    }
+  };
+
+  const clearAllNotifications = async () => {
+    try {
+      await notificationService.deleteAllByUserId(user.id);
+      setNotifications([]);
+    } catch (error) {
+      console.error('Error clearing all notifications:', error);
+      throw error;
+    }
   };
 
   const getUnreadCount = () => {
@@ -71,12 +107,14 @@ export const NotificationProvider = ({ children }) => {
 
   const value = {
     notifications,
+    loading,
     addNotification,
     markAsRead,
     markAllAsRead,
     deleteNotification,
     clearAllNotifications,
-    getUnreadCount
+    getUnreadCount,
+    loadNotifications
   };
 
   return (
